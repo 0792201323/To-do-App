@@ -38,8 +38,6 @@ This is a simple To-Do List application built using HTML, CSS, JavaScript, and N
 4. **Restore a Task**: Navigate to the Recycle Bin and restore deleted tasks if needed.
 5. **Persistent Storage**: Tasks are stored in the database to ensure data retention across sessions.
 
-## Screenshots
-(Add screenshots of your application for better understanding.)
 
 ## Contributing
 If you'd like to contribute to this project, feel free to fork the repository and submit a pull request.
@@ -48,7 +46,7 @@ If you'd like to contribute to this project, feel free to fork the repository an
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
-For any inquiries, please reach out via email: **your.email@example.com**
+For any inquiries, please reach out via email: **somafu@outlook.com**
 
 ## Live Demo
 (If deployed, provide a link to the live application.)
