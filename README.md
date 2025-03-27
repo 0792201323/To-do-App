@@ -49,6 +49,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For any inquiries, please reach out via email: **somafu@outlook.com**
 
 ## Live Demo
-(If deployed, provide a link to the live application.)
+()
 
 
