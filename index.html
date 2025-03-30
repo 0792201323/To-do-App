@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="#" onclick="showTasks('all')">Tasks</a></li>
+            <li><a href="#" onclick="showTasks('completed')">Completed Tasks</a></li>
+            <li><a href="#" onclick="showTasks('outstanding')">Outstanding Tasks</a></li>
+        </ul>
+        <div class="recycle-bin">
+            <button onclick="clearCompletedTasks()">🗑️</button>
+        </div>
+    </div>
+    <div class="main-content">
+        <h1>Manage Tasks</h1>
+        <div class="task-input">
+            <input type="text" id="taskTitle" placeholder="Task Title">
+            <textarea id="taskDescription" placeholder="Task Description"></textarea>
+            <input type="datetime-local" id="taskDueDate">
+            <button onclick="addTask()">Add Task</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
