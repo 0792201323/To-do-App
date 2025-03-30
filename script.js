@@ -8,12 +8,16 @@ function saveTasks() {
 
 // Function to add a task
 function addTask() {
-    const title = document.getElementById("taskTitle").value.trim();
-    const description = document.getElementById("taskDescription").value.trim();
-    const dueDate = document.getElementById("taskDueDate").value;
+    const titleInput = document.getElementById("taskTitle");
+    const descriptionInput = document.getElementById("taskDescription");
+    const dueDateInput = document.getElementById("taskDueDate");
+
+    const title = titleInput.value.trim();
+    const description = descriptionInput.value.trim();
+    const dueDate = dueDateInput.value;
 
     if (!title || !dueDate) {
-        alert("Please fill in the task title and due date.");
+        alert("Please enter a task title and due date.");
         return;
     }
 
@@ -37,7 +41,6 @@ function displayTasks(filter = "all") {
     taskList.innerHTML = "";
 
     let filteredTasks = tasks;
-
     if (filter === "completed") {
         filteredTasks = tasks.filter(task => task.completed);
     } else if (filter === "outstanding") {
@@ -89,7 +92,6 @@ function editTask(taskId) {
         document.getElementById("taskTitle").value = task.title;
         document.getElementById("taskDescription").value = task.description;
         document.getElementById("taskDueDate").value = task.dueDate;
-
         deleteTask(taskId);
     }
 }
@@ -114,4 +116,7 @@ function showTasks(filter) {
 }
 
 // Ensure tasks are displayed on load
-document.addEventListener("DOMContentLoaded", displayTasks);
+document.addEventListener("DOMContentLoaded", () => {
+    displayTasks();
+    document.getElementById("addTaskBtn").addEventListener("click", addTask);
+});
