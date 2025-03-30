@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do App</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script> 
 </head>
 <body>
     <div class="sidebar">
@@ -24,10 +25,9 @@
             <input type="text" id="taskTitle" placeholder="Task Title">
             <textarea id="taskDescription" placeholder="Task Description"></textarea>
             <input type="datetime-local" id="taskDueDate">
-            <button onclick="addTask()">Add Task</button>
+            <button id="addTaskBtn">Add Task</button> <!-- Ensure the button has an ID -->
         </div>
         <ul id="taskList"></ul>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
