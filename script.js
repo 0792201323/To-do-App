@@ -12,22 +12,23 @@ function addTask() {
     const description = document.getElementById("taskDescription").value.trim();
     const dueDate = document.getElementById("taskDueDate").value;
 
-    if (title && dueDate) {
-        const task = {
-            id: Date.now(),
-            title,
-            description,
-            dueDate,
-            completed: false
-        };
-
-        tasks.push(task);
-        saveTasks();
-        displayTasks();
-        resetForm();
-    } else {
+    if (!title || !dueDate) {
         alert("Please fill in the task title and due date.");
+        return;
     }
+
+    const task = {
+        id: Date.now(),
+        title,
+        description: description || "No description",
+        dueDate,
+        completed: false
+    };
+
+    tasks.push(task);
+    saveTasks();
+    displayTasks();
+    resetForm();
 }
 
 // Function to display tasks
@@ -50,7 +51,7 @@ function displayTasks(filter = "all") {
         taskElement.innerHTML = `
             <div>
                 <strong>${task.title}</strong><br>
-                <small>${task.description || "No description"}</small><br>
+                <small>${task.description}</small><br>
                 <small>Due: ${new Date(task.dueDate).toLocaleString()}</small>
             </div>
             <div class="task-actions">
@@ -112,5 +113,5 @@ function showTasks(filter) {
     displayTasks(filter);
 }
 
-// Initialize by displaying all tasks
-displayTasks();
+// Ensure tasks are displayed on load
+document.addEventListener("DOMContentLoaded", displayTasks);
