@@ -1,10 +1,5 @@
-// Store tasks in an array from local storage or initialize an empty array
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
-// Function to save tasks to local storage
-function saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-}
+// Store tasks in an array
+let tasks = [];
 
 // Function to add a task
 function addTask() {
@@ -22,7 +17,6 @@ function addTask() {
         };
 
         tasks.push(task);
-        saveTasks();
         displayTasks();
         resetForm();
     } else {
@@ -54,14 +48,12 @@ function displayTasks() {
 function toggleTaskCompletion(taskId) {
     const task = tasks.find(task => task.id === taskId);
     task.completed = !task.completed;
-    saveTasks();
     displayTasks();
 }
 
 // Function to clear completed tasks
 function clearCompletedTasks() {
     tasks = tasks.filter(task => !task.completed);
-    saveTasks();
     displayTasks();
 }
 
@@ -100,5 +92,5 @@ function showTasks(filter) {
     });
 }
 
-// Initialize by displaying all tasks on page load
+// Initialize by displaying all tasks
 displayTasks();
