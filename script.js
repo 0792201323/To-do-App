@@ -1,122 +1,66 @@
-// Load tasks from local storage or initialize an empty array
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-// Function to save tasks to local storage
-function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-// Function to add a task
-function addTask() {
-    const titleInput = document.getElementById("taskTitle");
-    const descriptionInput = document.getElementById("taskDescription");
-    const dueDateInput = document.getElementById("taskDueDate");
-
-    const title = titleInput.value.trim();
-    const description = descriptionInput.value.trim();
-    const dueDate = dueDateInput.value;
-
-    if (!title || !dueDate) {
-        alert("Please enter a task title and due date.");
-        return;
-    }
-
-    const task = {
-        id: Date.now(),
-        title,
-        description: description || "No description",
-        dueDate,
-        completed: false
-    };
-
-    tasks.push(task);
-    saveTasks();
-    displayTasks();
-    resetForm();
-}
-
-// Function to display tasks
-function displayTasks(filter = "all") {
+document.addEventListener("DOMContentLoaded", function() {
+    const taskInput = document.getElementById("taskTitle");
+    const taskDesc = document.getElementById("taskDescription");
+    const taskDueDate = document.getElementById("taskDueDate");
+    const addTaskBtn = document.getElementById("addTaskBtn");
     const taskList = document.getElementById("taskList");
-    taskList.innerHTML = "";
-
-    let filteredTasks = tasks;
-    if (filter === "completed") {
-        filteredTasks = tasks.filter(task => task.completed);
-    } else if (filter === "outstanding") {
-        filteredTasks = tasks.filter(task => !task.completed);
+    const darkModeToggle = document.createElement("button");
+    darkModeToggle.innerText = "🌙 Dark Mode";
+    darkModeToggle.onclick = toggleDarkMode;
+    document.body.appendChild(darkModeToggle);
+    
+    function loadTasks(filter = "all") {
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        taskList.innerHTML = "";
+        tasks.forEach((task, index) => {
+            if (filter === "completed" && !task.completed) return;
+            if (filter === "outstanding" && task.completed) return;
+            
+            const li = document.createElement("li");
+            li.className = task.completed ? "completed" : "";
+            li.innerHTML = `
+                <span class="${task.priority}" onclick="toggleTask(${index})">${task.title} - ${task.description} (${task.dueDate})</span>
+                <button onclick="deleteTask(${index})">🗑️</button>
+            `;
+            taskList.appendChild(li);
+        });
     }
-
-    filteredTasks.forEach(task => {
-        const taskElement = document.createElement("li");
-        taskElement.classList.add(task.completed ? "completed" : "");
-
-        taskElement.innerHTML = `
-            <div>
-                <strong>${task.title}</strong><br>
-                <small>${task.description}</small><br>
-                <small>Due: ${new Date(task.dueDate).toLocaleString()}</small>
-            </div>
-            <div class="task-actions">
-                <button onclick="toggleTaskCompletion(${task.id})">${task.completed ? "Undo" : "Complete"}</button>
-                <button onclick="editTask(${task.id})">Edit</button>
-                <button onclick="deleteTask(${task.id})">❌</button>
-            </div>
-        `;
-
-        taskList.appendChild(taskElement);
-    });
-}
-
-// Function to toggle task completion
-function toggleTaskCompletion(taskId) {
-    const task = tasks.find(task => task.id === taskId);
-    if (task) {
-        task.completed = !task.completed;
-        saveTasks();
-        displayTasks();
+    
+    function addTask() {
+        if (taskInput.value.trim() === "" || taskDueDate.value === "") return;
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        tasks.push({ 
+            title: taskInput.value, 
+            description: taskDesc.value, 
+            dueDate: taskDueDate.value, 
+            completed: false,
+            priority: "priority-low"
+        });
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        taskInput.value = "";
+        taskDesc.value = "";
+        taskDueDate.value = "";
+        loadTasks();
     }
-}
-
-// Function to delete a task
-function deleteTask(taskId) {
-    tasks = tasks.filter(task => task.id !== taskId);
-    saveTasks();
-    displayTasks();
-}
-
-// Function to edit a task
-function editTask(taskId) {
-    const task = tasks.find(task => task.id === taskId);
-    if (task) {
-        document.getElementById("taskTitle").value = task.title;
-        document.getElementById("taskDescription").value = task.description;
-        document.getElementById("taskDueDate").value = task.dueDate;
-        deleteTask(taskId);
+    
+    window.toggleTask = function(index) {
+        const tasks = JSON.parse(localStorage.getItem("tasks"));
+        tasks[index].completed = !tasks[index].completed;
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        loadTasks();
+    };
+    
+    window.deleteTask = function(index) {
+        const tasks = JSON.parse(localStorage.getItem("tasks"));
+        tasks.splice(index, 1);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        loadTasks();
+    };
+    
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
     }
-}
-
-// Function to clear completed tasks
-function clearCompletedTasks() {
-    tasks = tasks.filter(task => !task.completed);
-    saveTasks();
-    displayTasks();
-}
-
-// Function to reset the form inputs
-function resetForm() {
-    document.getElementById("taskTitle").value = "";
-    document.getElementById("taskDescription").value = "";
-    document.getElementById("taskDueDate").value = "";
-}
-
-// Function to filter tasks
-function showTasks(filter) {
-    displayTasks(filter);
-}
-
-// Ensure tasks are displayed on load
-document.addEventListener("DOMContentLoaded", () => {
-    displayTasks();
-    document.getElementById("addTaskBtn").addEventListener("click", addTask);
+    
+    addTaskBtn.addEventListener("click", addTask);
+    loadTasks();
 });

@@ -5,18 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do App</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script> 
 </head>
 <body>
     <div class="sidebar">
         <h2>Menu</h2>
         <ul>
-            <li><a href="#" onclick="showTasks('all')">Tasks</a></li>
-            <li><a href="#" onclick="showTasks('completed')">Completed Tasks</a></li>
-            <li><a href="#" onclick="showTasks('outstanding')">Outstanding Tasks</a></li>
+            <li><a href="#" onclick="loadTasks('all')">All Tasks</a></li>
+            <li><a href="#" onclick="loadTasks('completed')">Completed Tasks</a></li>
+            <li><a href="#" onclick="loadTasks('outstanding')">Outstanding Tasks</a></li>
         </ul>
         <div class="recycle-bin">
-            <button onclick="clearCompletedTasks()">🗑️</button>
+            <button onclick="clearCompletedTasks()">🗑️ Clear Completed</button>
         </div>
     </div>
     <div class="main-content">
@@ -25,9 +24,10 @@
             <input type="text" id="taskTitle" placeholder="Task Title">
             <textarea id="taskDescription" placeholder="Task Description"></textarea>
             <input type="datetime-local" id="taskDueDate">
-            <button id="addTaskBtn">Add Task</button> <!-- Ensure the button has an ID -->
+            <button id="addTaskBtn">Add Task</button>
         </div>
         <ul id="taskList"></ul>
     </div>
+    <script src="script.js" defer></script>
 </body>
 </html>
