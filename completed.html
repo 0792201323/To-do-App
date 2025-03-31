@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed Tasks</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="index.html">All Tasks</a></li>
+            <li><a href="completed.html">Completed Tasks</a></li>
+            <li><a href="outstanding.html">Outstanding Tasks</a></li>
+        </ul>
+        <div class="recycle-bin">
+            <button onclick="clearCompletedTasks()">🗑️</button>
+        </div>
+    </div>
+    <div class="main-content">
+        <h1>Completed Tasks</h1>
+        <ul id="taskList"></ul>
+    </div>
+    <script src="completed.js" defer></script>
+</body>
+</html>
