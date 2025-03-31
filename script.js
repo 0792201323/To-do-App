@@ -31,12 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // In script.js, modify the addTask function to include an ID for each task
     function addTask() {
         if (taskInput.value.trim() === "" || taskDueDate.value === "") return;
         const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
         tasks.push({ 
-            id: Date.now(), // Add unique ID
+            id: Date.now(),
             title: taskInput.value, 
             description: taskDesc.value, 
             dueDate: taskDueDate.value, 
@@ -50,18 +49,15 @@ document.addEventListener("DOMContentLoaded", function () {
         loadTasks();
     }
 
-    // In script.js, update the toggleTask function
     window.toggleTask = function (index) {
         const tasks = JSON.parse(localStorage.getItem("tasks"));
         tasks[index].completed = !tasks[index].completed;
         localStorage.setItem("tasks", JSON.stringify(tasks));
         
-        // Check if we're on the index page (all tasks view)
         if (window.location.pathname.endsWith('index.html') || 
             window.location.pathname === '/') {
             loadTasks();
         } else {
-            // If on another page, redirect to appropriate page
             if (tasks[index].completed) {
                 window.location.href = 'completed.html';
             } else {
@@ -70,37 +66,31 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-    // In script.js, replace the deleteTask function
     window.deleteTask = function (index) {
         const tasks = JSON.parse(localStorage.getItem("tasks"));
         const recycleBin = JSON.parse(localStorage.getItem("recycleBin")) || [];
         
-        // Move task to recycle bin
         recycleBin.push(tasks[index]);
         
-        // Remove from tasks
         tasks.splice(index, 1);
         
         localStorage.setItem("tasks", JSON.stringify(tasks));
         localStorage.setItem("recycleBin", JSON.stringify(recycleBin));
-        loadTasks();  // Reload tasks after deletion
+        loadTasks();
     };
 
-    // In script.js, update the clearCompletedTasks function
     window.clearCompletedTasks = function () {
         let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
         const recycleBin = JSON.parse(localStorage.getItem("recycleBin")) || [];
-        
-        // Move completed tasks to recycle bin
+ 
         const completedTasks = tasks.filter(task => task.completed);
         recycleBin.push(...completedTasks);
         
-        // Keep only outstanding tasks
         tasks = tasks.filter(task => !task.completed);
         
         localStorage.setItem("tasks", JSON.stringify(tasks));
         localStorage.setItem("recycleBin", JSON.stringify(recycleBin));
-        loadTasks();  // Reload tasks after clearing completed
+        loadTasks();
     };
 
     function toggleDarkMode() {
@@ -119,6 +109,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     addTaskBtn.addEventListener("click", addTask);
-    loadTasks();  // Load all tasks initially
+    loadTasks();
 
 });

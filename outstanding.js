@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         
         outstandingTasks.forEach((task, index) => {
-            // Find the original index in the full tasks array
             const fullTasks = JSON.parse(localStorage.getItem("tasks")) || [];
             const originalIndex = fullTasks.findIndex(t => t.id === task.id);
             
@@ -26,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Add this function to handle toggling from outstanding page
     window.toggleTaskFromOutstanding = function(index) {
         const tasks = JSON.parse(localStorage.getItem("tasks"));
         tasks[index].completed = true;

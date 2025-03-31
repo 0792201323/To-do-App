@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Restore task from the recycle bin
     window.restoreTask = function (taskId) {
         const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
         const recycleBin = JSON.parse(localStorage.getItem("recycleBin")) || [];
@@ -34,22 +33,21 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.setItem("tasks", JSON.stringify(tasks));
             localStorage.setItem("recycleBin", JSON.stringify(recycleBin));
 
-            loadRecycleBin();  // Reload recycle bin after restoring
+            loadRecycleBin();
         }
     };
 
-    // Delete task permanently from the recycle bin
     window.deleteForever = function (taskId) {
         const recycleBin = JSON.parse(localStorage.getItem("recycleBin")) || [];
 
         const taskIndex = recycleBin.findIndex(task => task.id === taskId);
         if (taskIndex !== -1) {
-            recycleBin.splice(taskIndex, 1); // Remove task
+            recycleBin.splice(taskIndex, 1);
             localStorage.setItem("recycleBin", JSON.stringify(recycleBin));
 
-            loadRecycleBin();  // Reload recycle bin after deletion
+            loadRecycleBin();
         }
     };
 
-    loadRecycleBin(); // Load tasks from the recycle bin on page load
+    loadRecycleBin();
 });
