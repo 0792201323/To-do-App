@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recycle Bin</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="index.html">All Tasks</a></li>
+            <li><a href="completed.html">Completed Tasks</a></li>
+            <li><a href="outstanding.html">Outstanding Tasks</a></li>
+            <div class="recycle-bin">
+                <button onclick="clearRecycleBInList()">🗑️</button>
+            </div>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>Recycle Bin</h1>
+        <ul id="recycleBinList"></ul>
+    </div>
+    <script src="recycle-bin.js" defer></script>
+</body>
+</html>
