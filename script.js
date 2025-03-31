@@ -14,9 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function loadTasks(filter = "all") {
         const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
         taskList.innerHTML = "";
-        taskView.style.display = "block";  // Show task view
-
-        // Filter tasks based on the selected filter (completed, outstanding)
+    
         tasks.forEach((task, index) => {
             if (filter === "completed" && !task.completed) return;
             if (filter === "outstanding" && task.completed) return;
@@ -24,17 +22,21 @@ document.addEventListener("DOMContentLoaded", function () {
             const li = document.createElement("li");
             li.className = task.completed ? "completed" : "";
             li.innerHTML = `
-                <span class="${task.priority}" onclick="toggleTask(${index})">${task.title} - ${task.description} (${task.dueDate})</span>
+                <span class="${task.priority}" onclick="toggleTask(${index})">
+                    ${task.title} - ${task.description} (${task.dueDate})
+                </span>
                 <button onclick="deleteTask(${index})">🗑️</button>
             `;
             taskList.appendChild(li);
         });
     }
 
+    // In script.js, modify the addTask function to include an ID for each task
     function addTask() {
         if (taskInput.value.trim() === "" || taskDueDate.value === "") return;
         const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
         tasks.push({ 
+            id: Date.now(), // Add unique ID
             title: taskInput.value, 
             description: taskDesc.value, 
             dueDate: taskDueDate.value, 
@@ -45,27 +47,59 @@ document.addEventListener("DOMContentLoaded", function () {
         taskInput.value = "";
         taskDesc.value = "";
         taskDueDate.value = "";
-        loadTasks();  // Reload tasks after adding a new one
+        loadTasks();
     }
 
+    // In script.js, update the toggleTask function
     window.toggleTask = function (index) {
         const tasks = JSON.parse(localStorage.getItem("tasks"));
         tasks[index].completed = !tasks[index].completed;
         localStorage.setItem("tasks", JSON.stringify(tasks));
-        loadTasks();  // Reload tasks after toggling
+        
+        // Check if we're on the index page (all tasks view)
+        if (window.location.pathname.endsWith('index.html') || 
+            window.location.pathname === '/') {
+            loadTasks();
+        } else {
+            // If on another page, redirect to appropriate page
+            if (tasks[index].completed) {
+                window.location.href = 'completed.html';
+            } else {
+                window.location.href = 'outstanding.html';
+            }
+        }
     };
 
+    // In script.js, replace the deleteTask function
     window.deleteTask = function (index) {
         const tasks = JSON.parse(localStorage.getItem("tasks"));
+        const recycleBin = JSON.parse(localStorage.getItem("recycleBin")) || [];
+        
+        // Move task to recycle bin
+        recycleBin.push(tasks[index]);
+        
+        // Remove from tasks
         tasks.splice(index, 1);
+        
         localStorage.setItem("tasks", JSON.stringify(tasks));
+        localStorage.setItem("recycleBin", JSON.stringify(recycleBin));
         loadTasks();  // Reload tasks after deletion
     };
 
+    // In script.js, update the clearCompletedTasks function
     window.clearCompletedTasks = function () {
         let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        const recycleBin = JSON.parse(localStorage.getItem("recycleBin")) || [];
+        
+        // Move completed tasks to recycle bin
+        const completedTasks = tasks.filter(task => task.completed);
+        recycleBin.push(...completedTasks);
+        
+        // Keep only outstanding tasks
         tasks = tasks.filter(task => !task.completed);
+        
         localStorage.setItem("tasks", JSON.stringify(tasks));
+        localStorage.setItem("recycleBin", JSON.stringify(recycleBin));
         loadTasks();  // Reload tasks after clearing completed
     };
 

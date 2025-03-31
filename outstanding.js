@@ -5,17 +5,34 @@ document.addEventListener("DOMContentLoaded", function () {
         const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
         taskList.innerHTML = "";
         
-        tasks.forEach((task) => {
-            if (!task.completed) {
-                const li = document.createElement("li");
-                li.className = task.completed ? "completed" : "";
-                li.innerHTML = `
-                    <span class="${task.priority}">${task.title} - ${task.description} (${task.dueDate})</span>
-                `;
-                taskList.appendChild(li);
-            }
+        const outstandingTasks = tasks.filter(task => !task.completed);
+        
+        if (outstandingTasks.length === 0) {
+            taskList.innerHTML = "<p>No outstanding tasks.</p>";
+            return;
+        }
+        
+        outstandingTasks.forEach((task, index) => {
+            // Find the original index in the full tasks array
+            const fullTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            const originalIndex = fullTasks.findIndex(t => t.id === task.id);
+            
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <span class="${task.priority}">${task.title} - ${task.description} (${task.dueDate})</span>
+                <button onclick="toggleTaskFromOutstanding(${originalIndex})">Mark Complete</button>
+            `;
+            taskList.appendChild(li);
         });
     }
+
+    // Add this function to handle toggling from outstanding page
+    window.toggleTaskFromOutstanding = function(index) {
+        const tasks = JSON.parse(localStorage.getItem("tasks"));
+        tasks[index].completed = true;
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        window.location.href = 'completed.html';
+    };
 
     loadTasks();
 });
